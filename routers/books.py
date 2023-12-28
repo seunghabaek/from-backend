@@ -6,6 +6,7 @@ from typing import Union
 from dotenv import load_dotenv
 
 from domain.books.books_service import get_naver_books_list
+from models import BookItem,  BookList
 
 load_dotenv()
 
@@ -30,4 +31,25 @@ async def get_book_list(keyword: str):
     sort = "sim"
     response = get_naver_books_list(keyword, display, sort, header_dict)
 
-    return {"books": response}  # type: ignore
+    # argument
+    response_total = response.get("total")
+    items = response.get("items")
+
+    items_list = [
+        BookItem(
+            title=item.get("title"),
+            book_cover=item.get("image"),
+            author=item.get("author"),
+            publisher=item.get("publisher"),
+            publish_date=item.get("pubdate"),
+            isbn=item.get("isbn"),
+            description=item.get("description"),
+        ) for item in items
+    ]
+
+    book_list_response = BookList(
+        total=response.get("total"),
+        display=response.get("display"),
+        items=items_list)
+
+    return {"books": book_list_response}  # type: ignore
