@@ -1,12 +1,12 @@
 import os
 
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter
 from typing import Union
 
 from dotenv import load_dotenv
 
-from domain.books.books_service import get_naver_books_list
-from models import BookItem,  BookList
+from domain.books.books_service import get_book_list_response, get_naver_books_list
+from models import BookList, BookListResponse
 
 load_dotenv()
 
@@ -25,31 +25,13 @@ router = APIRouter(
 )
 
 
-@router.get("/get_book_list")
+@router.get("/get_book_list", response_model=BookListResponse)
 async def get_book_list(keyword: str):
     display = 10
     sort = "sim"
+
     response = get_naver_books_list(keyword, display, sort, header_dict)
+    book_list_response = get_book_list_response(response)
 
-    # argument
-    response_total = response.get("total")
-    items = response.get("items")
-
-    items_list = [
-        BookItem(
-            title=item.get("title"),
-            book_cover=item.get("image"),
-            author=item.get("author"),
-            publisher=item.get("publisher"),
-            publish_date=item.get("pubdate"),
-            isbn=item.get("isbn"),
-            description=item.get("description"),
-        ) for item in items
-    ]
-
-    book_list_response = BookList(
-        total=response.get("total"),
-        display=response.get("display"),
-        items=items_list)
-
-    return {"books": book_list_response}  # type: ignore
+    # type: ignore
+    return {"result_type": "SUCCESS", "results": book_list_response}
