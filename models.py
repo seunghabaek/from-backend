@@ -1,5 +1,8 @@
+from typing import List
+from dataclasses import dataclass
 from typing import Optional
 from pydantic import BaseModel
+
 
 class ItemPayload(BaseModel):
     item_id: Optional[int]
@@ -7,4 +10,19 @@ class ItemPayload(BaseModel):
     quantity: int
 
 
-# https://openapi.naver.com/v1/search/book.json?display=20&sort=sim&query=어
+@dataclass
+class BookItem:
+    title: str
+    book_cover: str
+    author: str
+    publisher: str
+    publish_date: str
+    isbn: str
+    description: str
+
+
+@dataclass
+class BookList:
+    total: int
+    display: int
+    items: List
