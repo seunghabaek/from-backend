@@ -1,13 +1,5 @@
 from typing import List
 from dataclasses import dataclass
-from typing import Optional
-from pydantic import BaseModel
-
-
-class ItemPayload(BaseModel):
-    item_id: Optional[int]
-    item_name: str
-    quantity: int
 
 
 @dataclass
@@ -25,4 +17,10 @@ class BookItem:
 class BookList:
     total: int
     display: int
-    items: List
+    items: List[BookItem]
+
+
+@dataclass
+class BookListResponse:
+    result_type: str
+    results: BookList
