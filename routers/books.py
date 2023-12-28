@@ -1,24 +1,36 @@
+import os
+
 from fastapi import APIRouter, Depends, Header
-from starlette.config import Config
+from typing import Union
 
-# setup config
-config = Config('.env')
+from dotenv import load_dotenv
 
-def get_naver_headers(
-    x_naver_client_id: str = Header(...),
-    naver_client_secret: str = Header(...),
-):
-    return {
-        "naver_client_id": x_naver_client_id,
-        "naver_client_secret": naver_client_secret,
-    }
+from domain.books.books_service import get_naver_books_list
+
+load_dotenv()
+
+X_NAVER_CLIENT_ID = os.getenv("X_NAVER_CLIENT_ID")
+X_NAVER_CLIENT_SECRET = os.getenv("X_NAVER_CLIENT_SECRET")
+
+header_dict = {"X-Naver-Client-Id": X_NAVER_CLIENT_ID, "X-Naver-Client-Secret":X_NAVER_CLIENT_SECRET}
+
 
 router = APIRouter(
     prefix="/books",
     tags=["books"],
-    dependencies=[Depends(get_naver_headers)],
+    # dependencies=[Depends(get_naver_headers)],
 )
 
 @router.get("/get_book_list")
-def get_book_list(headers: dict = Depends(get_naver_headers)) -> dict[str, str]:
-    return {"message": "Hello World", "headers": headers} # type: ignore
+async def get_book_list(keyword: str):
+    display = 10
+    sort = "sim"
+    response = get_naver_books_list(keyword, display, sort, header_dict)
+    
+    return {"books" : response} # type: ignore
+
+
+@router.get("/")
+async def root():
+    return {"message": f"{X_NAVER_CLIENT_ID}"}
+
