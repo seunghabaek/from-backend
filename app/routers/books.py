@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 from fastapi import APIRouter
 from typing import Union
 
-
-from domain.books.books_service import get_book_list_response, get_naver_books_list
+from app.domain.books.books_service import get_naver_books_list, get_book_list_response
 from app.models import BookList, BookListResponse
 
 load_dotenv()
