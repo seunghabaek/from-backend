@@ -1,12 +1,12 @@
 import os
+from dotenv import load_dotenv
 
 from fastapi import APIRouter
 from typing import Union
 
-from dotenv import load_dotenv
 
 from domain.books.books_service import get_book_list_response, get_naver_books_list
-from models import BookList, BookListResponse
+from app.models import BookList, BookListResponse
 
 load_dotenv()
 
@@ -35,3 +35,19 @@ async def get_book_list(keyword: str):
 
     # type: ignore
     return {"result_type": "SUCCESS", "results": book_list_response}
+
+
+@router.post("/write_book_review")
+async def write_book_review():
+    # request body
+    return {"result_type": "SUCCESS", "results:": "review done!"}
+
+
+@router.get("/get_book_review")
+async def get_book_review():
+    return {"result_type": "SUCCESS", "results:": "review done!"}
+
+
+@router.get("/get_reviewer_review_list")
+async def get_reviewer_review_list():
+    return {"result_type": "SUCCESS", "results:": "review done!"}

@@ -1,7 +1,7 @@
 import json
 import requests
 
-from models import BookItem, BookList
+from app.models import BookItem, BookList
 
 
 def get_naver_books_list(query: str, display: int, sort: str, header_dict: dict):
