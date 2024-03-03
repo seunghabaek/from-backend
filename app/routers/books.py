@@ -1,5 +1,5 @@
-import os
-from dotenv import load_dotenv
+
+import yaml
 
 from fastapi import APIRouter
 from typing import Union
@@ -7,10 +7,15 @@ from typing import Union
 from app.domain.books.books_service import get_naver_books_list, get_book_list_response
 from app.models import BookList, BookListResponse
 
-load_dotenv()
 
-X_NAVER_CLIENT_ID = os.getenv("X_NAVER_CLIENT_ID")
-X_NAVER_CLIENT_SECRET = os.getenv("X_NAVER_CLIENT_SECRET")
+with open("conf.yaml", "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+    x_naver_client_id = config["secrets"]["naver"]["client_id"]
+    x_naver_client_secret = config["secrets"]["naver"]["client_secret"]
+
+X_NAVER_CLIENT_ID=x_naver_client_id
+X_NAVER_CLIENT_SECRET=x_naver_client_secret
+
 
 header_dict = {
     "X-Naver-Client-Id": X_NAVER_CLIENT_ID,
