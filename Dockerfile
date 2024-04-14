@@ -5,7 +5,7 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 #COPY ./requirements.txt /code/requirements.txt
 COPY ./requirements.txt ${LAMBDA_TASK_ROOT}/
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r ${LAMBDA_TASK_ROOT}/requirements.txt
 
 COPY . .
 
