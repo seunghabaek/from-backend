@@ -1,8 +1,9 @@
 FROM public.ecr.aws/lambda/python:3.9
 
-WORKDIR /code
+WORKDIR ${LAMBDA_TASK_ROOT}
 
-COPY ./requirements.txt /code/requirements.txt
+#COPY ./requirements.txt /code/requirements.txt
+COPY ./requirements.txt ${LAMBDA_TASK_ROOT}/
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
