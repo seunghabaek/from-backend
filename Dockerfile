@@ -1,13 +1,11 @@
-FROM public.ecr.aws/lambda/python:3.9
+FROM python:3.9
 
-WORKDIR ${LAMBDA_TASK_ROOT}
+WORKDIR /code
 
-#COPY ./requirements.txt /code/requirements.txt
-COPY requirements.txt ${LAMBDA_TASK_ROOT}
+COPY ./requirements.txt /code/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./app ${LAMBDA_TASK_ROOT}
+COPY . .
 
-#CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
-CMD ["main.handler"]
+CMD ["app.main:app"]
