@@ -1,23 +1,26 @@
 import os
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+import yaml
+from fastapi import FastAPI, HTTPException, APIRouter
 from mangum import Mangum
 from pydantic import BaseModel
 
+from app.routers import books
+
 app = FastAPI()
 
-# app.include_router(books.router)
+app.include_router(books.router)
 
 
-# class BookItem(BaseModel):
-#     title: str
-#     book_cover: str
-#     author: str
-#     publisher: str
-#     publish_date: str
-#     isbn: str
-#     description: Optional[str] = None
+class BookItem(BaseModel):
+    title: str
+    book_cover: str
+    author: str
+    publisher: str
+    publish_date: str
+    isbn: str
+    description: Optional[str] = None
 
 @app.get("/api/v1/get_book_list")
 async def get_book_list():
@@ -31,18 +34,18 @@ async def get_book_list():
     }
 
 
-@app.post("/api/v1/write_book_review")
+@app.post("/write_book_review")
 async def write_book_review():
     # request body
     return {"result_type": "SUCCESS", "results:": "review done!"}
 
 
-@app.get("/api/v1/get_book_review")
+@app.get("/get_book_review")
 async def get_book_review():
     return {"result_type": "SUCCESS", "results:": "review done!"}
 
 
-@app.get("/api/v1/get_reviewer_review_list")
+@app.get("/get_reviewer_review_list")
 async def get_reviewer_review_list():
     return {"result_type": "SUCCESS", "results:": "review done!"}
 
